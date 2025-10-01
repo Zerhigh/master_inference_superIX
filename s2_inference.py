@@ -72,46 +72,5 @@ if __name__ == '__main__':
                                 'filename': None
                                 })
 
-    # parallel(cropped_s2_data, config={'model_name': model_name,
-    #                                     'model': model,
-    #                                     'src': None,
-    #                                     'outpath': outpath,
-    #                                     'filename': None
-    #                                     })
-
-
-    def old():
-
-        for i, file in tqdm(enumerate(s2_data['lr_s2_path'])):
-            # open sentinel2 tile
-            filename = Path(file).name
-            try:
-                with rasterio.open(file) as src:
-                    img = src.read()
-            except:
-                print(f'Error with image: {file}, skipping it')
-                continue
-
-            if model_name == 'evoland':
-                result = run_evoland(model, lr=img)
-                superX = result['sr']
-                # output is returned as float32, but values are uint16
-                # convert to float32 by division of 10_000
-                superX = superX / 10_000
-
-                # resample from 5m to 2.5m
-                superX_resampled = torch.nn.functional.interpolate(
-                    torch.from_numpy(superX).unsqueeze(0),
-                    scale_factor=2,
-                    mode='bilinear',
-                    antialias=True
-                ).squeeze().numpy()
-
-                # save_img(img=superX, src=src, save_path=outpath / model_name / 'evoland_resolution' / filename, res=5)
-                # save_img(img=superX_resampled, src=src, save_path=outpath / model_name / 'experiment_resolution' / filename, res=2.5)
-            elif model_name == 'sr4rs':
-                result = run_sr4rs(model, lr=img)
-                break
-
     t2 = time.time()
     print('took [s]: ', round(t2 - t1, 2))
