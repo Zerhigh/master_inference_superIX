@@ -1,0 +1,8 @@
+superIX/*/weights/*
+superIX/evoland/weights/carn_3x3x64g4sw_bootstrap.onnx
+superIX/sr4rs/weights/saved_model.pb
+superIX/sr4rs/weights/variables/variables.data-00000-of-00001
+superIX/sr4rs/weights/variables/variables.index
+superIX/swin2_mose/weights/model-70.pt
+.venv
+.idea
